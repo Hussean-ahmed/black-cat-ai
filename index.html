@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black Cat AI | محادثات الذكاء الاصطناعي المميزة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        :root {
+            --black: #0a0a0a;
+            --black-light: #1a1a1a;
+            --black-medium: #2a2a2a;
+            --platinum: #e2e2e2;
+            --silver: #c9c9c9;
+            --gold: #f59e0b;
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--black), #000);
+            color: var(--platinum);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 10% 20%, rgba(10, 10, 10, 0.3) 0%, transparent 20%),
+                        radial-gradient(circle at 90% 80%, rgba(10, 10, 10, 0.2) 0%, transparent 20%);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Landing Screen */
+        .landing-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+            padding: 40px;
+            opacity: 1;
+            transform: translateY(0);
+            transition: var(--transition);
+        }
+
+        .landing-screen.hidden {
+            opacity: 0;
+            transform: translateY(-20px);
+            pointer-events: none;
+        }
+
+        .logo-container {
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .logo-glow {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--black), var(--gold));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 0 40px rgba(10, 10, 10, 0.6);
+            animation: pulse 3s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 40px rgba(10, 10, 10, 0.6); }
+            100% { box-shadow: 0 0 60px rgba(10, 10, 10, 0.8), 0 0 80px rgba(245, 158, 11, 0.4); }
+        }
+
+        .logo-icon {
+            font-size: 50px;
+            color: white;
+        }
+
+        .landing-title {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, var(--platinum), var(--gold), var(--black));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -1px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .landing-subtitle {
+            font-size: 1.4rem;
+            color: var(--silver);
+            max-width: 700px;
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 50px 0;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .feature-card {
+            background: rgba(26, 26, 26, 0.7);
+            border: 1px solid rgba(10, 10, 10, 0.2);
+            border-radius: 16px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--black);
+            box-shadow: 0 10px 30px rgba(10, 10, 10, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--black);
+            margin-bottom: 15px;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .feature-desc {
+            font-size: 0.95rem;
+            color: var(--silver);
+            line-height: 1.5;
+        }
+
+        .enter-button {
+            background: linear-gradient(135deg, var(--black), var(--black-light));
+            color: white;
+            border: none;
+            padding: 18px 45px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 5px 25px rgba(10, 10, 10, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .enter-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 35px rgba(10, 10, 10, 0.6);
+            background: linear-gradient(135deg, var(--black-light), var(--black-medium));
+        }
+
+        .enter-button:active {
+            transform: translateY(1px);
+        }
+
+        /* Chat Interface */
+        .chat-interface {
+            display: flex;
+            flex: 1;
+            gap: 25px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: var(--transition);
+            height: calc(100vh - 120px);
+        }
+
+        .chat-interface.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .sidebar {
+            flex: 0 0 300px;
+            background: rgba(10, 10, 10, 0.85);
+            border-radius: 20px;
+            padding: 25px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(10, 10, 10, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+        }
+
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(10, 10, 10, 0.2);
+        }
+
+        .sidebar-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-title i {
+            color: var(--black);
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+        }
+
+        .control-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(42, 42, 42, 0.7);
+            border: 1px solid rgba(10, 10, 10, 0.2);
+            color: var(--silver);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .control-btn:hover {
+            background: var(--black);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .ai-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--silver);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .ai-models {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .ai-model {
+            padding: 15px 18px;
+            border-radius: 14px;
+            background: rgba(42, 42, 42, 0.5);
+            border: 1px solid transparent;
+            color: var(--silver);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .ai-model:hover {
+            background: rgba(10, 10, 10, 0.1);
+            border-color: rgba(10, 10, 10, 0.3);
+        }
+
+        .ai-model.active {
+            background: linear-gradient(90deg, rgba(10, 10, 10, 0.2), rgba(10, 10, 10, 0.1));
+            border-color: var(--black);
+            color: white;
+        }
+
+        .ai-model i {
+            font-size: 1.2rem;
+        }
+
+        .conversations {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .conv-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .conv-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--silver);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .conv-count {
+            font-size: 0.8rem;
+            color: var(--black);
+        }
+
+        .conv-list {
+            list-style: none;
+        }
+
+        .conv-item {
+            padding: 14px 16px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            background: rgba(42, 42, 42, 0.5);
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+        }
+
+        .conv-item:hover {
+            background: rgba(10, 10, 10, 0.1);
+            border-color: rgba(10, 10, 10, 0.3);
+        }
+
+        .conv-item.active {
+            background: linear-gradient(90deg, rgba(10, 10, 10, 0.2), rgba(10, 10, 10, 0.1));
+            border-color: var(--black);
+        }
+
+        .conv-item i {
+            color: var(--black);
+        }
+
+        .delete-conv {
+            position: absolute;
+            right: 12px;
+            background: none;
+            border: none;
+            color: var(--silver);
+            opacity: 0;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .conv-item:hover .delete-conv {
+            opacity: 1;
+        }
+
+        .delete-conv:hover {
+            color: var(--black);
+        }
+
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: rgba(10, 10, 10, 0.85);
+            border-radius: 20px;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(10, 10, 10, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        }
+
+        .chat-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid rgba(10, 10, 10, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .ai-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--black);
+            box-shadow: 0 0 10px var(--black);
+        }
+
+        .chat-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .message {
+            max-width: 85%;
+            padding: 20px 25px;
+            border-radius: 18px;
+            line-height: 1.6;
+            position: relative;
+            animation: messageAppear 0.3s ease-out;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes messageAppear {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-message {
+            background: linear-gradient(135deg, var(--black), var(--black-light));
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+
+        .ai-message {
+            background: rgba(42, 42, 42, 0.8);
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+
+        .message-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .message-header i {
+            font-size: 1.1rem;
+        }
+
+        .user-message .message-header i {
+            color: white;
+        }
+
+        .ai-message .message-header i {
+            color: var(--black);
+        }
+
+        .message-content {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .input-area {
+            padding: 25px;
+            background: rgba(26, 26, 26, 0.9);
+            border-top: 1px solid rgba(10, 10, 10, 0.2);
+            display: flex;
+            gap: 15px;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 16px 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(10, 10, 10, 0.2);
+            background: rgba(42, 42, 42, 0.7);
+            color: var(--platinum);
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .message-input:focus {
+            border-color: var(--black);
+            box-shadow: 0 0 0 3px rgba(10, 10, 10, 0.3);
+        }
+
+        .send-btn {
+            background: linear-gradient(135deg, var(--black), var(--black-light));
+            color: white;
+            border: none;
+            width: 55px;
+            height: 55px;
+            border-radius: 16px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(10, 10, 10, 0.3);
+        }
+
+        .send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(10, 10, 10, 0.4);
+        }
+
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 18px 22px;
+            background: rgba(42, 42, 42, 0.8);
+            border-radius: 18px;
+            align-self: flex-start;
+            width: fit-content;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .typing-text {
+            font-size: 0.9rem;
+            color: var(--silver);
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--black);
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1100px) {
+            .chat-interface {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                flex: 0 0 auto;
+            }
+            
+            .landing-title {
+                font-size: 3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .landing-title {
+                font-size: 2.5rem;
+            }
+            
+            .landing-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .message {
+                max-width: 90%;
+                padding: 15px 18px;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .landing-title {
+                font-size: 2rem;
+            }
+            
+            .chat-header {
+                padding: 15px 20px;
+            }
+            
+            .input-area {
+                padding: 15px;
+            }
+            
+            .message-input {
+                padding: 12px 15px;
+            }
+            
+            .send-btn {
+                width: 50px;
+                height: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Landing Screen -->
+        <div class="landing-screen" id="landingScreen">
+            <div class="logo-container">
+                <div class="logo-glow">
+                    <i class="fas fa-cat logo-icon"></i>
+                </div>
+            </div>
+            
+            <h1 class="landing-title">BLACK <span style="color: var(--black);">CAT</span> AI</h1>
+            <p class="landing-subtitle">اختبر مستقبل الذكاء الاصطناعي مع منصة المحادثات المميزة لدينا. تفاعل مع نماذج الذكاء الاصطناعي المتطورة المصممة للإبداع والدقة والذكاء غير المسبوق.</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3 class="feature-title">سريع كالبرق</h3>
+                    <p class="feature-desc">استجابات فورية مدعومة بشبكات عصبية من الجيل التالي</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title">آمن للغاية</h3>
+                    <p class="feature-desc">تشفير من طرف إلى طرف يضمن بقاء محادثاتك خاصة</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <h3 class="feature-title">نماذج مميزة</h3>
+                    <p class="feature-desc">الوصول إلى شخصيات ذكاء اصطناعي متعددة ومتخصصة</p>
+                </div>
+            </div>
+            
+            <button class="enter-button" id="enterButton">
+                <i class="fas fa-arrow-right"></i>
+                دخول Black Cat AI
+            </button>
+        </div>
+
+        <!-- Chat Interface -->
+        <div class="chat-interface" id="chatInterface">
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h2 class="sidebar-title">
+                        <i class="fas fa-comments"></i>
+                        المحادثات
+                    </h2>
+                    <div class="controls">
+                        <button class="control-btn" id="newConvBtn" title="محادثة جديدة">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <button class="control-btn" id="clearConvBtn" title="مسح المحادثة">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="ai-section">
+                    <h3 class="section-title">نماذج الذكاء الاصطناعي</h3>
+                    <div class="ai-models">
+                        <div class="ai-model active" data-model="grok">
+                            <i class="fas fa-brain"></i>
+                            <span>Grok</span>
+                        </div>
+                        <div class="ai-model" data-model="gpt">
+                            <i class="fas fa-robot"></i>
+                            <span>GPT</span>
+                        </div>
+                        <div class="ai-model" data-model="deepseek">
+                            <i class="fas fa-search"></i>
+                            <span>DeepSeek</span>
+                        </div>
+                        <div class="ai-model" data-model="gemma">
+                            <i class="fas fa-gem"></i>
+                            <span>Gemma</span>
+                        </div>
+                        <div class="ai-model" data-model="gemini">
+                            <i class="fas fa-star"></i>
+                            <span>Gemini</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="conversations">
+                    <div class="conv-header">
+                        <h3 class="conv-title">المحادثات الأخيرة</h3>
+                        <span class="conv-count" id="convCount">3</span>
+                    </div>
+                    <ul class="conv-list" id="convList">
+                        <li class="conv-item active" data-id="1">
+                            <i class="fas fa-comment"></i>
+                            <span>تخطيط المشروع</span>
+                            <button class="delete-conv" data-id="1">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </li>
+                        <li class="conv-item" data-id="2">
+                            <i class="fas fa-comment"></i>
+                            <span>كتابة إبداعية</span>
+                            <button class="delete-conv" data-id="2">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </li>
+                        <li class="conv-item" data-id="3">
+                            <i class="fas fa-comment"></i>
+                            <span>الدعم الفني</span>
+                            <button class="delete-conv" data-id="3">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="chat-area">
+                <div class="chat-header">
+                    <div class="ai-indicator"></div>
+                    <h3 class="chat-title" id="currentModel">Grok</h3>
+                </div>
+                
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message ai-message">
+                        <div class="message-header">
+                            <i class="fas fa-robot"></i>
+                            <span>Grok</span>
+                        </div>
+                        <div class="message-content">
+                            مرحباً! أنا Grok، مساعدك الذكي المتقدم. كيف يمكنني مساعدتك اليوم؟ سواء كنت بحاجة إلى معلومات أو أفكار إبداعية أو حل للمشكلات، فأنا هنا لمساعدتك.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="input-area">
+                    <input type="text" class="message-input" id="messageInput" placeholder="اكتب رسالتك هنا...">
+                    <button class="send-btn" id="sendButton">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const landingScreen = document.getElementById('landingScreen');
+            const chatInterface = document.getElementById('chatInterface');
+            const enterButton = document.getElementById('enterButton');
+            const newConvBtn = document.getElementById('newConvBtn');
+            const clearConvBtn = document.getElementById('clearConvBtn');
+            const sendButton = document.getElementById('sendButton');
+            const messageInput = document.getElementById('messageInput');
+            const chatMessages = document.getElementById('chatMessages');
+            const convList = document.getElementById('convList');
+            const convCount = document.getElementById('convCount');
+            const currentModel = document.getElementById('currentModel');
+            
+            // State
+            let currentConversationId = 1;
+            let selectedModel = 'grok';
+            let conversations = [
+                {
+                    id: 1,
+                    title: 'تخطيط المشروع',
+                    model: 'grok',
+                    messages: [
+                        {
+                            sender: 'ai',
+                            content: 'مرحباً! أنا Grok، مساعدك الذكي المتقدم. كيف يمكنني مساعدتك اليوم؟ سواء كنت بحاجة إلى معلومات أو أفكار إبداعية أو حل للمشكلات، فأنا هنا لمساعدتك.'
+                        }
+                    ]
+                },
+                {
+                    id: 2,
+                    title: 'كتابة إبداعية',
+                    model: 'gpt',
+                    messages: []
+                },
+                {
+                    id: 3,
+                    title: 'الدعم الفني',
+                    model: 'deepseek',
+                    messages: []
+                }
+            ];
+
+            // Model names mapping
+            const modelNames = {
+                'grok': 'Grok',
+                'gpt': 'GPT',
+                'deepseek': 'DeepSeek',
+                'gemma': 'Gemma',
+                'gemini': 'Gemini'
+            };
+
+            // Model welcome messages
+            const welcomeMessages = {
+                'grok': 'مرحباً! أنا Grok، مساعدك الذكي المتقدم. كيف يمكنني مساعدتك اليوم؟',
+                'gpt': 'مرحباً! أنا GPT، نموذج اللغة المتقدم. كيف يمكنني خدمتك؟',
+                'deepseek': 'مرحباً! أنا DeepSeek، مساعدك الذكي للبحث العميق. كيف يمكنني مساعدتك؟',
+                'gemma': 'مرحباً! أنا Gemma، مساعدك الذكي المميز. كيف يمكنني مساعدتك اليوم؟',
+                'gemini': 'مرحباً! أنا Gemini، مساعدك الذكي المتعدد القدرات. كيف يمكنني خدمتك؟'
+            };
+
+            // API Functions
+            async function callGrok(text){
+                try {
+                    const res = await fetch("https://sii3.top/api/grok4.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: new URLSearchParams({
+                            text: text
+                        })
+                    });
+
+                    const data = await res.json();
+                    return data.response;
+                } catch (error) {
+                    console.error("Error calling Grok:", error);
+                    return "عذراً، حدث خطأ في الاتصال بخدمة Grok. يرجى المحاولة مرة أخرى.";
+                }
+            }
+
+            async function callGPT(text){
+                try {
+                    const res = await fetch("https://sii3.top/api/gpt-oss.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            text: text
+                        })
+                    });
+
+                    const data = await res.json();
+                    return data.response;
+                } catch (error) {
+                    console.error("Error calling GPT:", error);
+                    return "عذراً، حدث خطأ في الاتصال بخدمة GPT. يرجى المحاولة مرة أخرى.";
+                }
+            }
+
+            async function callDeepSeek(text){
+                try {
+                    const res = await fetch("https://sii3.top/api/deepseek.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: new URLSearchParams({
+                            r1: text
+                        })
+                    });
+
+                    const data = await res.json();
+                    return data.response;
+                } catch (error) {
+                    console.error("Error calling DeepSeek:", error);
+                    return "عذراً، حدث خطأ في الاتصال بخدمة DeepSeek. يرجى المحاولة مرة أخرى.";
+                }
+            }
+
+            async function callGemma(text){
+                try {
+                    const res = await fetch("https://sii3.top/api/gemma.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: new URLSearchParams({
+                            "27b": text
+                        })
+                    });
+
+                    const data = await res.json();
+                    return data.response;
+                } catch (error) {
+                    console.error("Error calling Gemma:", error);
+                    return "عذراً، حدث خطأ في الاتصال بخدمة Gemma. يرجى المحاولة مرة أخرى.";
+                }
+            }
+
+            async function callGemini(text){
+                try {
+                    const res = await fetch("https://sii3.top/DARK/gemini.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            text: text
+                        })
+                    });
+
+                    const data = await res.json();
+                    return data.response;
+                } catch (error) {
+                    console.error("Error calling Gemini:", error);
+                    return "عذراً، حدث خطأ في الاتصال بخدمة Gemini. يرجى المحاولة مرة أخرى.";
+                }
+            }
+
+            // Enter site animation
+            enterButton.addEventListener('click', function() {
+                landingScreen.classList.add('hidden');
+                setTimeout(() => {
+                    chatInterface.classList.add('visible');
+                }, 300);
+            });
+
+            // AI Model Selection
+            document.querySelectorAll('.ai-model').forEach(model => {
+                model.addEventListener('click', function() {
+                    document.querySelectorAll('.ai-model').forEach(m => m.classList.remove('active'));
+                    this.classList.add('active');
+                    selectedModel = this.dataset.model;
+                    currentModel.textContent = modelNames[selectedModel];
+                    
+                    // Update current conversation model
+                    const currentConv = conversations.find(c => c.id == currentConversationId);
+                    if (currentConv) {
+                        currentConv.model = selectedModel;
+                    }
+                });
+            });
+
+            // Conversation Management
+            function createNewConversation() {
+                const newId = Date.now();
+                const newConversation = {
+                    id: newId,
+                    title: `محادثة جديدة ${conversations.length + 1}`,
+                    model: selectedModel,
+                    messages: []
+                };
+                
+                conversations.unshift(newConversation);
+                currentConversationId = newId;
+                renderConversations();
+                loadConversation(newId);
+            }
+
+            function deleteConversation(id) {
+                conversations = conversations.filter(conv => conv.id != id);
+                renderConversations();
+                
+                if (currentConversationId == id) {
+                    if (conversations.length > 0) {
+                        loadConversation(conversations[0].id);
+                    } else {
+                        createNewConversation();
+                    }
+                }
+                
+                updateConversationCount();
+            }
+
+            function clearCurrentConversation() {
+                const currentConv = conversations.find(c => c.id == currentConversationId);
+                if (currentConv) {
+                    currentConv.messages = [];
+                    chatMessages.innerHTML = '';
+                    addMessage(welcomeMessages[selectedModel], false);
+                }
+            }
+
+            function loadConversation(id) {
+                const conversation = conversations.find(conv => conv.id == id);
+                if (conversation) {
+                    currentConversationId = id;
+                    selectedModel = conversation.model;
+                    
+                    // Update UI
+                    document.querySelectorAll('.conv-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    document.querySelector(`.conv-item[data-id="${id}"]`).classList.add('active');
+                    
+                    document.querySelectorAll('.ai-model').forEach(model => {
+                        model.classList.remove('active');
+                    });
+                    document.querySelector(`.ai-model[data-model="${selectedModel}"]`).classList.add('active');
+                    
+                    currentModel.textContent = modelNames[selectedModel];
+                    
+                    // Load messages
+                    chatMessages.innerHTML = '';
+                    conversation.messages.forEach(msg => {
+                        addMessage(msg.content, msg.sender === 'user');
+                    });
+                    
+                    // If no messages, add welcome message
+                    if (conversation.messages.length === 0) {
+                        addMessage(welcomeMessages[selectedModel], false);
+                    }
+                }
+            }
+
+            function renderConversations() {
+                convList.innerHTML = '';
+                conversations.forEach(conv => {
+                    const li = document.createElement('li');
+                    li.className = 'conv-item';
+                    li.dataset.id = conv.id;
+                    if (conv.id == currentConversationId) {
+                        li.classList.add('active');
+                    }
+                    li.innerHTML = `
+                        <i class="fas fa-comment"></i>
+                        <span>${conv.title}</span>
+                        <button class="delete-conv" data-id="${conv.id}">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    convList.appendChild(li);
+                });
+                
+                // Add event listeners
+                document.querySelectorAll('.conv-item').forEach(item => {
+                    item.addEventListener('click', function(e) {
+                        if (!e.target.classList.contains('delete-conv') && 
+                            !e.target.closest('.delete-conv')) {
+                            loadConversation(this.dataset.id);
+                        }
+                    });
+                });
+                
+                document.querySelectorAll('.delete-conv').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        deleteConversation(this.dataset.id);
+                    });
+                });
+                
+                updateConversationCount();
+            }
+
+            function updateConversationCount() {
+                convCount.textContent = conversations.length;
+            }
+
+            // Message Functions
+            function addMessage(content, isUser = false) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${isUser ? 'user-message' : 'ai-message'}`;
+                
+                const messageHeader = document.createElement('div');
+                messageHeader.className = 'message-header';
+                messageHeader.innerHTML = `
+                    <i class="fas ${isUser ? 'fa-user' : 'fa-robot'}"></i>
+                    <span>${isUser ? 'أنت' : modelNames[selectedModel]}</span>
+                `;
+                
+                const messageContent = document.createElement('div');
+                messageContent.className = 'message-content';
+                messageContent.textContent = content;
+                
+                messageDiv.appendChild(messageHeader);
+                messageDiv.appendChild(messageContent);
+                chatMessages.appendChild(messageDiv);
+                
+                // Scroll to bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // Save to conversation
+                const currentConv = conversations.find(c => c.id == currentConversationId);
+                if (currentConv) {
+                    currentConv.messages.push({
+                        sender: isUser ? 'user' : 'ai',
+                        content: content
+                    });
+                }
+            }
+
+            function showTypingIndicator() {
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'typing-indicator';
+                typingDiv.id = 'typingIndicator';
+                typingDiv.innerHTML = `
+                    <div class="typing-text">جاري التفكير</div>
+                    <div class="typing-dots">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                `;
+                chatMessages.appendChild(typingDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            function hideTypingIndicator() {
+                const typingIndicator = document.getElementById('typingIndicator');
+                if (typingIndicator) {
+                    typingIndicator.remove();
+                }
+            }
+
+            async function generateAIResponse(userMessage) {
+                try {
+                    let response;
+                    switch(selectedModel) {
+                        case 'grok':
+                            response = await callGrok(userMessage);
+                            break;
+                        case 'gpt':
+                            response = await callGPT(userMessage);
+                            break;
+                        case 'deepseek':
+                            response = await callDeepSeek(userMessage);
+                            break;
+                        case 'gemma':
+                            response = await callGemma(userMessage);
+                            break;
+                        case 'gemini':
+                            response = await callGemini(userMessage);
+                            break;
+                        default:
+                            response = "عذراً، لم أتمكن من معالجة طلبك.";
+                    }
+                    return response;
+                } catch (error) {
+                    console.error("Error generating AI response:", error);
+                    return "عذراً، حدث خطأ في معالجة طلبك. يرجى المحاولة مرة أخرى.";
+                }
+            }
+
+            async function sendMessage() {
+                const message = messageInput.value.trim();
+                if (message) {
+                    addMessage(message, true);
+                    messageInput.value = '';
+                    
+                    showTypingIndicator();
+                    
+                    try {
+                        const aiResponse = await generateAIResponse(message);
+                        hideTypingIndicator();
+                        addMessage(aiResponse, false);
+                    } catch (error) {
+                        hideTypingIndicator();
+                        addMessage("عذراً، حدث خطأ في الاتصال بالخدمة. يرجى المحاولة مرة أخرى.", false);
+                    }
+                }
+            }
+
+            // Event Listeners
+            newConvBtn.addEventListener('click', createNewConversation);
+            
+            clearConvBtn.addEventListener('click', clearCurrentConversation);
+            
+            sendButton.addEventListener('click', sendMessage);
+            
+            messageInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+
+            // Initialize
+            renderConversations();
+            updateConversationCount();
+        });
+    </script>
+</body>
+</html>
