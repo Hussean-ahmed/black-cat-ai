@@ -1,1208 +1,1029 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Black Cat AI | محادثات الذكاء الاصطناعي المميزة</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-        }
-
-        :root {
-            --black: #0a0a0a;
-            --black-light: #1a1a1a;
-            --black-medium: #2a2a2a;
-            --platinum: #e2e2e2;
-            --silver: #c9c9c9;
-            --gold: #f59e0b;
-            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        body {
-            background: linear-gradient(135deg, var(--black), #000);
-            color: var(--platinum);
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 10% 20%, rgba(10, 10, 10, 0.3) 0%, transparent 20%),
-                        radial-gradient(circle at 90% 80%, rgba(10, 10, 10, 0.2) 0%, transparent 20%);
-            z-index: -1;
-        }
-
-        .container {
-            max-width: 1600px;
-            margin: 0 auto;
-            padding: 20px;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Landing Screen */
-        .landing-screen {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            height: 100%;
-            padding: 40px;
-            opacity: 1;
-            transform: translateY(0);
-            transition: var(--transition);
-        }
-
-        .landing-screen.hidden {
-            opacity: 0;
-            transform: translateY(-20px);
-            pointer-events: none;
-        }
-
-        .logo-container {
-            margin-bottom: 40px;
-            position: relative;
-        }
-
-        .logo-glow {
-            width: 120px;
-            height: 120px;
-            background: linear-gradient(135deg, var(--black), var(--gold));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            box-shadow: 0 0 40px rgba(10, 10, 10, 0.6);
-            animation: pulse 3s infinite alternate;
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 40px rgba(10, 10, 10, 0.6); }
-            100% { box-shadow: 0 0 60px rgba(10, 10, 10, 0.8), 0 0 80px rgba(245, 158, 11, 0.4); }
-        }
-
-        .logo-icon {
-            font-size: 50px;
-            color: white;
-        }
-
-        .landing-title {
-            font-size: 4rem;
-            font-weight: 800;
-            margin-bottom: 20px;
-            background: linear-gradient(to right, var(--platinum), var(--gold), var(--black));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: -1px;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        .landing-subtitle {
-            font-size: 1.4rem;
-            color: var(--silver);
-            max-width: 700px;
-            line-height: 1.6;
-            margin-bottom: 40px;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin: 50px 0;
-            width: 100%;
-            max-width: 900px;
-        }
-
-        .feature-card {
-            background: rgba(26, 26, 26, 0.7);
-            border: 1px solid rgba(10, 10, 10, 0.2);
-            border-radius: 16px;
-            padding: 25px;
-            backdrop-filter: blur(10px);
-            transition: var(--transition);
-            text-align: center;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--black);
-            box-shadow: 0 10px 30px rgba(10, 10, 10, 0.2);
-        }
-
-        .feature-icon {
-            font-size: 2.5rem;
-            color: var(--black);
-            margin-bottom: 15px;
-        }
-
-        .feature-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: white;
-        }
-
-        .feature-desc {
-            font-size: 0.95rem;
-            color: var(--silver);
-            line-height: 1.5;
-        }
-
-        .enter-button {
-            background: linear-gradient(135deg, var(--black), var(--black-light));
-            color: white;
-            border: none;
-            padding: 18px 45px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: 0 5px 25px rgba(10, 10, 10, 0.4);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-top: 20px;
-        }
-
-        .enter-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 35px rgba(10, 10, 10, 0.6);
-            background: linear-gradient(135deg, var(--black-light), var(--black-medium));
-        }
-
-        .enter-button:active {
-            transform: translateY(1px);
-        }
-
-        /* Chat Interface */
-        .chat-interface {
-            display: flex;
-            flex: 1;
-            gap: 25px;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: var(--transition);
-            height: calc(100vh - 120px);
-        }
-
-        .chat-interface.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .sidebar {
-            flex: 0 0 300px;
-            background: rgba(10, 10, 10, 0.85);
-            border-radius: 20px;
-            padding: 25px;
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(10, 10, 10, 0.3);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-            display: flex;
-            flex-direction: column;
-            transition: var(--transition);
-        }
-
-        .sidebar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid rgba(10, 10, 10, 0.2);
-        }
-
-        .sidebar-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: white;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .sidebar-title i {
-            color: var(--black);
-        }
-
-        .controls {
-            display: flex;
-            gap: 12px;
-        }
-
-        .control-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
-            background: rgba(42, 42, 42, 0.7);
-            border: 1px solid rgba(10, 10, 10, 0.2);
-            color: var(--silver);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-        }
-
-        .control-btn:hover {
-            background: var(--black);
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        .ai-section {
-            margin-bottom: 30px;
-        }
-
-        .section-title {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--silver);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-        }
-
-        .ai-models {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .ai-model {
-            padding: 15px 18px;
-            border-radius: 14px;
-            background: rgba(42, 42, 42, 0.5);
-            border: 1px solid transparent;
-            color: var(--silver);
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .ai-model:hover {
-            background: rgba(10, 10, 10, 0.1);
-            border-color: rgba(10, 10, 10, 0.3);
-        }
-
-        .ai-model.active {
-            background: linear-gradient(90deg, rgba(10, 10, 10, 0.2), rgba(10, 10, 10, 0.1));
-            border-color: var(--black);
-            color: white;
-        }
-
-        .ai-model i {
-            font-size: 1.2rem;
-        }
-
-        .conversations {
-            flex: 1;
-            overflow-y: auto;
-        }
-
-        .conv-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .conv-title {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--silver);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .conv-count {
-            font-size: 0.8rem;
-            color: var(--black);
-        }
-
-        .conv-list {
-            list-style: none;
-        }
-
-        .conv-item {
-            padding: 14px 16px;
-            border-radius: 12px;
-            margin-bottom: 8px;
-            background: rgba(42, 42, 42, 0.5);
-            border: 1px solid transparent;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            position: relative;
-        }
-
-        .conv-item:hover {
-            background: rgba(10, 10, 10, 0.1);
-            border-color: rgba(10, 10, 10, 0.3);
-        }
-
-        .conv-item.active {
-            background: linear-gradient(90deg, rgba(10, 10, 10, 0.2), rgba(10, 10, 10, 0.1));
-            border-color: var(--black);
-        }
-
-        .conv-item i {
-            color: var(--black);
-        }
-
-        .delete-conv {
-            position: absolute;
-            right: 12px;
-            background: none;
-            border: none;
-            color: var(--silver);
-            opacity: 0;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .conv-item:hover .delete-conv {
-            opacity: 1;
-        }
-
-        .delete-conv:hover {
-            color: var(--black);
-        }
-
-        .chat-area {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            background: rgba(10, 10, 10, 0.85);
-            border-radius: 20px;
-            overflow: hidden;
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(10, 10, 10, 0.3);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-        }
-
-        .chat-header {
-            padding: 20px 25px;
-            border-bottom: 1px solid rgba(10, 10, 10, 0.2);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .ai-indicator {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--black);
-            box-shadow: 0 0 10px var(--black);
-        }
-
-        .chat-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: white;
-        }
-
-        .chat-messages {
-            flex: 1;
-            padding: 25px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .message {
-            max-width: 85%;
-            padding: 20px 25px;
-            border-radius: 18px;
-            line-height: 1.6;
-            position: relative;
-            animation: messageAppear 0.3s ease-out;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        @keyframes messageAppear {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .user-message {
-            background: linear-gradient(135deg, var(--black), var(--black-light));
-            align-self: flex-end;
-            border-bottom-right-radius: 5px;
-        }
-
-        .ai-message {
-            background: rgba(42, 42, 42, 0.8);
-            align-self: flex-start;
-            border-bottom-left-radius: 5px;
-        }
-
-        .message-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-
-        .message-header i {
-            font-size: 1.1rem;
-        }
-
-        .user-message .message-header i {
-            color: white;
-        }
-
-        .ai-message .message-header i {
-            color: var(--black);
-        }
-
-        .message-content {
-            font-size: 1rem;
-            line-height: 1.6;
-        }
-
-        .input-area {
-            padding: 25px;
-            background: rgba(26, 26, 26, 0.9);
-            border-top: 1px solid rgba(10, 10, 10, 0.2);
-            display: flex;
-            gap: 15px;
-        }
-
-        .message-input {
-            flex: 1;
-            padding: 16px 20px;
-            border-radius: 16px;
-            border: 1px solid rgba(10, 10, 10, 0.2);
-            background: rgba(42, 42, 42, 0.7);
-            color: var(--platinum);
-            font-size: 1rem;
-            outline: none;
-            transition: var(--transition);
-        }
-
-        .message-input:focus {
-            border-color: var(--black);
-            box-shadow: 0 0 0 3px rgba(10, 10, 10, 0.3);
-        }
-
-        .send-btn {
-            background: linear-gradient(135deg, var(--black), var(--black-light));
-            color: white;
-            border: none;
-            width: 55px;
-            height: 55px;
-            border-radius: 16px;
-            cursor: pointer;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-            box-shadow: 0 5px 15px rgba(10, 10, 10, 0.3);
-        }
-
-        .send-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(10, 10, 10, 0.4);
-        }
-
-        .typing-indicator {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 18px 22px;
-            background: rgba(42, 42, 42, 0.8);
-            border-radius: 18px;
-            align-self: flex-start;
-            width: fit-content;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .typing-text {
-            font-size: 0.9rem;
-            color: var(--silver);
-        }
-
-        .typing-dots {
-            display: flex;
-            gap: 4px;
-        }
-
-        .typing-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--black);
-            border-radius: 50%;
-            animation: typing 1.4s infinite ease-in-out;
-        }
-
-        .typing-dot:nth-child(1) { animation-delay: 0s; }
-        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-
-        @keyframes typing {
-            0%, 60%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-5px); }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 1100px) {
-            .chat-interface {
-                flex-direction: column;
-            }
-            
-            .sidebar {
-                flex: 0 0 auto;
-            }
-            
-            .landing-title {
-                font-size: 3rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-            }
-            
-            .landing-title {
-                font-size: 2.5rem;
-            }
-            
-            .landing-subtitle {
-                font-size: 1.1rem;
-            }
-            
-            .message {
-                max-width: 90%;
-                padding: 15px 18px;
-            }
-            
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .landing-title {
-                font-size: 2rem;
-            }
-            
-            .chat-header {
-                padding: 15px 20px;
-            }
-            
-            .input-area {
-                padding: 15px;
-            }
-            
-            .message-input {
-                padding: 12px 15px;
-            }
-            
-            .send-btn {
-                width: 50px;
-                height: 50px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>حسين أحمد | مبرمج بايثون محترف</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@700;800;900&family=Tajawal:wght@300;400;500;600;700&display=swap');
+
+    :root {
+      --primary: #8b5cf6;
+      --secondary: #ec4899;
+      --dark: #0f172a;
+      --light: #f8fafc;
+      --accent: #0ea5e9;
+      --success: #10b981;
+      --blur-bg: rgba(255, 255, 255, 0.08);
+      /* تغيير ألوان CAT IQ لتتناسب مع الموقع */
+      --cat-primary: #8b5cf6; /* نفس primary */
+      --cat-secondary: #ec4899; /* نفس secondary */
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: var(--light);
+      overflow-x: hidden;
+      position: relative;
+      scroll-behavior: smooth;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.08) 0%, transparent 30%),
+        radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.08) 0%, transparent 30%);
+      pointer-events: none;
+    }
+
+    /* Welcome Overlay */
+    .welcome-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #0f172a;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      opacity: 1;
+    }
+
+    .welcome-text {
+      font-family: 'Cairo', sans-serif;
+      font-size: 2.8rem;
+      color: white;
+      text-align: center;
+      max-width: 90%;
+      line-height: 1.4;
+      opacity: 0;
+      margin-bottom: 3rem;
+    }
+
+    .enter-btn {
+      padding: 1rem 2.5rem;
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-family: 'Cairo', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .enter-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 15px 30px rgba(139, 92, 246, 0.4);
+    }
+
+    /* Main Layout */
+    .main-content {
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 4rem 2rem;
+    }
+
+    .hero-content {
+      max-width: 1400px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .hero-image {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      z-index: 1;
+    }
+
+    .profile-image {
+      width: 420px;
+      height: 420px;
+      border-radius: 24px;
+      object-fit: cover;
+      position: relative;
+      animation: float 6s ease-in-out infinite;
+      box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.6);
+      border: 4px solid transparent;
+      background: linear-gradient(45deg, var(--primary), var(--secondary)) padding-box,
+                  linear-gradient(45deg, var(--primary), var(--secondary)) border-box;
+    }
+
+    .profile-image::before {
+      content: '';
+      position: absolute;
+      top: -25px;
+      left: -25px;
+      right: -25px;
+      bottom: -25px;
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      z-index: -1;
+      border-radius: 28px;
+      opacity: 0.2;
+      animation: pulse 4s ease-in-out infinite;
+    }
+
+    .hero-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+      max-width: 600px;
+    }
+
+    .dynamic-title {
+      font-family: 'Cairo', sans-serif;
+      font-size: 2.8rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(45deg, #ffffff, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .hero-desc {
+      font-size: 1.25rem;
+      color: #cbd5e1;
+      line-height: 1.8;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .badges {
+      display: flex;
+      gap: 1rem;
+      margin: 1.5rem 0;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .badge {
+      background: var(--blur-bg);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .info-card {
+      background: var(--blur-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 1.5rem;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .info-card:hover {
+      transform: translateY(-8px);
+      background: rgba(139, 92, 246, 0.2);
+      border-color: var(--primary);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .info-card i {
+      font-size: 2rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .info-card h4 {
+      font-size: 1.1rem;
+      color: white;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .info-card p {
+      font-size: 1rem;
+      color: #94a3b8;
+      margin: 0;
+      font-weight: 500;
+    }
+
+    section {
+      padding: 8rem 2rem;
+      position: relative;
+    }
+
+    .section-title {
+      font-family: 'Cairo', sans-serif;
+      font-size: 3.5rem;
+      text-align: center;
+      margin-bottom: 4rem;
+      background: linear-gradient(45deg, var(--accent), var(--primary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      position: relative;
+      opacity: 0;
+      transform: translateY(50px);
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      border-radius: 2px;
+    }
+
+    /* Story Section */
+    .story-content {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+      line-height: 1.8;
+      font-size: 1.15rem;
+      opacity: 0;
+      transform: translateY(40px);
+    }
+
+    .story-content p {
+      margin-bottom: 1.5rem;
+      color: #e2e8f0;
+    }
+
+    .highlight-text {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    /* Company Section - FULLY IMPLEMENTED */
+    .company-section {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 30px;
+      margin: 0 auto;
+      max-width: 1100px;
+      padding: 4rem;
+      text-align: center;
+      position: relative;
+      opacity: 0;
+      transform: translateY(50px);
+    }
+
+    .company-header {
+      margin-bottom: 3rem;
+    }
+
+    .company-logo {
+      font-family: 'Cairo', sans-serif;
+      font-size: 4.5rem;
+      font-weight: 900;
+      color: var(--primary); /* تغيير إلى اللون الأساسي */
+      margin-bottom: 1.5rem;
+      text-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
+    }
+
+    .company-motto {
+      font-size: 1.6rem;
+      line-height: 1.6;
+      margin-bottom: 2.5rem;
+      color: #e2e8f0;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .company-desc {
+      font-size: 1.2rem;
+      color: #cbd5e1;
+      line-height: 1.7;
+      max-width: 700px;
+      margin: 0 auto 3rem;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+
+    .service-card {
+      background: rgba(139, 92, 246, 0.08); /* لون أفتح من primary */
+      border-radius: 20px;
+      padding: 2rem;
+      text-align: center;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      opacity: 0;
+      transform: translateY(30px);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+    }
+
+    .service-card:hover {
+      background: rgba(139, 92, 246, 0.15); /* نفس hover بدرجة أفتح */
+      transform: translateY(-8px);
+      border-color: var(--primary);
+      box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2);
+    }
+
+    .service-icon {
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(45deg, var(--primary), var(--secondary)); /* نفس gradient الموقع */
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-size: 1.8rem;
+      color: white;
+      box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+    }
+
+    .service-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 0.75rem;
+    }
+
+    .company-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 2.8rem;
+      background: linear-gradient(45deg, var(--primary), var(--secondary)); /* نفس gradient الموقع */
+      color: white;
+      border-radius: 50px;
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 1.2rem;
+      margin-top: 2rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: none;
+    }
+
+    .company-btn:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 15px 30px rgba(139, 92, 246, 0.4); /* نفس shadow الموقع */
+    }
+
+    .skills-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .skill-item {
+      background: var(--blur-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 2.5rem;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .skill-item:hover {
+      transform: translateY(-10px);
+      background: rgba(139, 92, 246, 0.15);
+      border-color: var(--primary);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+    }
+
+    .skill-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .skill-item h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: white;
+    }
+
+    .social-section {
+      background: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+      border-radius: 30px;
+      padding: 4rem;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 2.5rem;
+    }
+
+    .social-box {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2rem;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.5s ease;
+    }
+
+    .social-box:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-8px);
+    }
+
+    .social-box h3 {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      color: white;
+    }
+
+    .social-username {
+      font-size: 1.1rem;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      margin-top: 1rem;
+    }
+
+    .social-link {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      color: white;
+      text-decoration: none;
+      font-size: 1.3rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .social-link:hover {
+      transform: translateY(-5px) scale(1.1);
+      box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);
+    }
+
+    /* Outro Section */
+    .outro {
+      background: linear-gradient(135deg, var(--dark) 0%, #1e293b 100%);
+      padding: 8rem 2rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .outro::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 30%, rgba(236, 72, 153, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.1) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    .outro-text {
+      font-family: 'Cairo', sans-serif;
+      font-size: 3.5rem;
+      line-height: 1.3;
+      margin-bottom: 3rem;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+      opacity: 0;
+      transform: translateY(40px);
+    }
+
+    .outro-text span {
+      color: var(--primary);
+    }
+
+    .big-cta {
+      padding: 1.5rem 4rem;
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-family: 'Cairo', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 2rem;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .big-cta:hover {
+      transform: translateY(-8px) scale(1.05);
+      box-shadow: 0 25px 50px rgba(139, 92, 246, 0.5);
+    }
+
+    .signature {
+      margin-top: 4rem;
+      font-size: 1.1rem;
+      color: #94a3b8;
+      font-style: italic;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    /* ======= إصلاح مشكلة عرض قسم CAT IQ ======= */
+    #company {
+      position: relative;
+      z-index: 10;
+      overflow: visible;
+      display: block !important;
+    }
+    
+    .company-section {
+      position: relative;
+      z-index: 20;
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+      visibility: visible !important;
+      display: block !important;
+    }
+    
+    .company-section.animated {
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+    /* ======= نهاية الإصلاح ======= */
+
+    /* Animations */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-25px) rotate(2deg); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.2; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(1.02); }
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .hero-content { grid-template-columns: 1fr; text-align: center; gap: 3rem; }
+      .profile-image { width: 340px; height: 340px; }
+      .hero-info { max-width: 100%; margin-top: 2rem; }
+      .info-grid { justify-content: center; }
+      .dynamic-title { font-size: 2.2rem; }
+    }
+
+    @media (max-width: 768px) {
+      .profile-image { width: 300px; height: 300px; }
+      .section-title { font-size: 2.5rem; }
+      .company-logo { font-size: 3.5rem; }
+      .outro-text { font-size: 2.5rem; }
+    }
+
+    @media (max-width: 480px) {
+      .profile-image { width: 260px; height: 260px; }
+      .section-title { font-size: 2rem; }
+      .info-grid { grid-template-columns: 1fr; }
+      .services-grid { grid-template-columns: 1fr; }
+      .outro-text { font-size: 2rem; }
+      .big-cta { padding: 1.2rem 3rem; font-size: 1.3rem; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Landing Screen -->
-        <div class="landing-screen" id="landingScreen">
-            <div class="logo-container">
-                <div class="logo-glow">
-                    <i class="fas fa-cat logo-icon"></i>
-                </div>
-            </div>
-            
-            <h1 class="landing-title">BLACK <span style="color: var(--black);">CAT</span> AI</h1>
-            <p class="landing-subtitle">اختبر مستقبل الذكاء الاصطناعي مع منصة المحادثات المميزة لدينا. تفاعل مع نماذج الذكاء الاصطناعي المتطورة المصممة للإبداع والدقة والذكاء غير المسبوق.</p>
-            
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-rocket"></i>
-                    </div>
-                    <h3 class="feature-title">سريع كالبرق</h3>
-                    <p class="feature-desc">استجابات فورية مدعومة بشبكات عصبية من الجيل التالي</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3 class="feature-title">آمن للغاية</h3>
-                    <p class="feature-desc">تشفير من طرف إلى طرف يضمن بقاء محادثاتك خاصة</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-gem"></i>
-                    </div>
-                    <h3 class="feature-title">نماذج مميزة</h3>
-                    <p class="feature-desc">الوصول إلى شخصيات ذكاء اصطناعي متعددة ومتخصصة</p>
-                </div>
-            </div>
-            
-            <button class="enter-button" id="enterButton">
-                <i class="fas fa-arrow-right"></i>
-                دخول Black Cat AI
-            </button>
+
+  <!-- Welcome Overlay -->
+  <div class="welcome-overlay" id="welcomeOverlay">
+    <div class="welcome-text" id="welcomeText"></div>
+    <button class="enter-btn" id="enterBtn">ادخل العالم</button>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content" id="mainContent">
+    
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+      <div class="hero-content">
+        <div class="hero-image">
+          <img src="me.jpg" alt="حسين أحمد - مبرمج بايثون" class="profile-image">
         </div>
-
-        <!-- Chat Interface -->
-        <div class="chat-interface" id="chatInterface">
-            <div class="sidebar">
-                <div class="sidebar-header">
-                    <h2 class="sidebar-title">
-                        <i class="fas fa-comments"></i>
-                        المحادثات
-                    </h2>
-                    <div class="controls">
-                        <button class="control-btn" id="newConvBtn" title="محادثة جديدة">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                        <button class="control-btn" id="clearConvBtn" title="مسح المحادثة">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="ai-section">
-                    <h3 class="section-title">نماذج الذكاء الاصطناعي</h3>
-                    <div class="ai-models">
-                        <div class="ai-model active" data-model="grok">
-                            <i class="fas fa-brain"></i>
-                            <span>Grok</span>
-                        </div>
-                        <div class="ai-model" data-model="gpt">
-                            <i class="fas fa-robot"></i>
-                            <span>GPT</span>
-                        </div>
-                        <div class="ai-model" data-model="deepseek">
-                            <i class="fas fa-search"></i>
-                            <span>DeepSeek</span>
-                        </div>
-                        <div class="ai-model" data-model="gemma">
-                            <i class="fas fa-gem"></i>
-                            <span>Gemma</span>
-                        </div>
-                        <div class="ai-model" data-model="gemini">
-                            <i class="fas fa-star"></i>
-                            <span>Gemini</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="conversations">
-                    <div class="conv-header">
-                        <h3 class="conv-title">المحادثات الأخيرة</h3>
-                        <span class="conv-count" id="convCount">3</span>
-                    </div>
-                    <ul class="conv-list" id="convList">
-                        <li class="conv-item active" data-id="1">
-                            <i class="fas fa-comment"></i>
-                            <span>تخطيط المشروع</span>
-                            <button class="delete-conv" data-id="1">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </li>
-                        <li class="conv-item" data-id="2">
-                            <i class="fas fa-comment"></i>
-                            <span>كتابة إبداعية</span>
-                            <button class="delete-conv" data-id="2">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </li>
-                        <li class="conv-item" data-id="3">
-                            <i class="fas fa-comment"></i>
-                            <span>الدعم الفني</span>
-                            <button class="delete-conv" data-id="3">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </li>
-                    </ul>
-                </div>
+        <div class="hero-info">
+          <h2 class="dynamic-title" id="dynamicTitle">مبرمج بايثون</h2>
+          <p class="hero-desc" id="heroDesc">أحوّل الأفكار إلى أنظمة حقيقية. أبني حلولاً تقنية مبتكرة تجمع بين القوة والأناقة من قلوب العراق.</p>
+          
+          <div class="badges" id="badges">
+            <span class="badge">سرعة</span>
+            <span class="badge">أمان</span>
+            <span class="badge">تصميم عصري</span>
+          </div>
+          
+          <div class="info-grid">
+            <div class="info-card" id="info1">
+              <i class="fas fa-user"></i>
+              <h4>الاسم الكامل</h4>
+              <p>حسين أحمد</p>
             </div>
-
-            <div class="chat-area">
-                <div class="chat-header">
-                    <div class="ai-indicator"></div>
-                    <h3 class="chat-title" id="currentModel">Grok</h3>
-                </div>
-                
-                <div class="chat-messages" id="chatMessages">
-                    <div class="message ai-message">
-                        <div class="message-header">
-                            <i class="fas fa-robot"></i>
-                            <span>Grok</span>
-                        </div>
-                        <div class="message-content">
-                            مرحباً! أنا Grok، مساعدك الذكي المتقدم. كيف يمكنني مساعدتك اليوم؟ سواء كنت بحاجة إلى معلومات أو أفكار إبداعية أو حل للمشكلات، فأنا هنا لمساعدتك.
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="input-area">
-                    <input type="text" class="message-input" id="messageInput" placeholder="اكتب رسالتك هنا...">
-                    <button class="send-btn" id="sendButton">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
+            <div class="info-card" id="info2">
+              <i class="fas fa-birthday-cake"></i>
+              <h4>العمر</h4>
+              <p>26 سنة</p>
             </div>
+            <div class="info-card" id="info3">
+              <i class="fas fa-map-marker-alt"></i>
+              <h4>الموقع</h4>
+              <p>البصرة، العراق</p>
+            </div>
+            <div class="info-card" id="info4">
+              <i class="fab fa-python"></i>
+              <h4>التخصص</h4>
+              <p>بايثون محترف</p>
+            </div>
+          </div>
         </div>
-    </div>
+      </div>
+    </section>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // DOM Elements
-            const landingScreen = document.getElementById('landingScreen');
-            const chatInterface = document.getElementById('chatInterface');
-            const enterButton = document.getElementById('enterButton');
-            const newConvBtn = document.getElementById('newConvBtn');
-            const clearConvBtn = document.getElementById('clearConvBtn');
-            const sendButton = document.getElementById('sendButton');
-            const messageInput = document.getElementById('messageInput');
-            const chatMessages = document.getElementById('chatMessages');
-            const convList = document.getElementById('convList');
-            const convCount = document.getElementById('convCount');
-            const currentModel = document.getElementById('currentModel');
-            
-            // State
-            let currentConversationId = 1;
-            let selectedModel = 'grok';
-            let conversations = [
-                {
-                    id: 1,
-                    title: 'تخطيط المشروع',
-                    model: 'grok',
-                    messages: [
-                        {
-                            sender: 'ai',
-                            content: 'مرحباً! أنا Grok، مساعدك الذكي المتقدم. كيف يمكنني مساعدتك اليوم؟ سواء كنت بحاجة إلى معلومات أو أفكار إبداعية أو حل للمشكلات، فأنا هنا لمساعدتك.'
-                        }
-                    ]
-                },
-                {
-                    id: 2,
-                    title: 'كتابة إبداعية',
-                    model: 'gpt',
-                    messages: []
-                },
-                {
-                    id: 3,
-                    title: 'الدعم الفني',
-                    model: 'deepseek',
-                    messages: []
-                }
-            ];
+    <!-- Story Section -->
+    <section id="story">
+      <h2 class="section-title" id="storyTitle">قصتي</h2>
+      <div class="story-content" id="storyContent">
+        <p>بدأت رحلتي مع البرمجة عندما اكتشفت أن <span class="highlight-text">الكود يمكن أن يغير العالم</span>. تعلمت بايثون لأنها لغة النخبة - بسيطة لكن قوية، مرنة لكن فعّالة.</p>
+        <p>اخترت أن أكون <span class="highlight-text">مبرمجاً محترفاً</span> لا مجرد مبرمج، لأنني أؤمن أن كل سطر كود يجب أن يحمل قيمة حقيقية لصاحب المشروع.</p>
+        <p>ما يميزني عن غيري هو الجمع بين <span class="highlight-text">العقلية التقنية</span> و<span class="highlight-text">الحس الإبداعي</span>، فكل مشروع أعمل عليه هو تحفة فنية تعمل بكفاءة عالية.</p>
+      </div>
+    </section>
 
-            // Model names mapping
-            const modelNames = {
-                'grok': 'Grok',
-                'gpt': 'GPT',
-                'deepseek': 'DeepSeek',
-                'gemma': 'Gemma',
-                'gemini': 'Gemini'
-            };
+    <!-- Company Section - FULLY IMPLEMENTED -->
+    <section id="company">
+      <h2 class="section-title" id="companyTitle">CAT IQ للتصميم</h2>
+      <div class="company-section">
+        <div class="company-header">
+          <div class="company-logo">CAT IQ</div>
+          <p class="company-motto" id="companyMotto">نوفّر لك تصميم حسب فكرتك<br>بأفضل أداء<br>بأرخص الأسعار<br>وبوقت قياسي</p>
+          <p class="company-desc" id="companyDesc">نقدم حلولاً تصميمية متكاملة تلبي احتياجاتك الإبداعية والتسويقية، مع فريق عمل متخصص يجمع بين الخبرة والإبداع.</p>
+        </div>
+        
+        <div class="services-grid">
+          <div class="service-card" id="service1">
+            <div class="service-icon">
+              <i class="fas fa-bullhorn"></i>
+            </div>
+            <h3 class="service-title">بوسترات إعلانية</h3>
+          </div>
+          <div class="service-card" id="service2">
+            <div class="service-icon">
+              <i class="fas fa-hashtag"></i>
+            </div>
+            <h3 class="service-title">تصاميم سوشيال ميديا</h3>
+          </div>
+          <div class="service-card" id="service3">
+            <div class="service-icon">
+              <i class="fas fa-palette"></i>
+            </div>
+            <h3 class="service-title">هويات بصرية</h3>
+          </div>
+          <div class="service-card" id="service4">
+            <div class="service-icon">
+              <i class="fas fa-lightbulb"></i>
+            </div>
+            <h3 class="service-title">أي تصميم يخطر ببالك</h3>
+          </div>
+        </div>
+        
+        <a href="https://www.instagram.com/cat.iiq/" target="_blank" class="company-btn" id="companyBtn">
+          <i class="fab fa-instagram"></i> زر صفحة الشركة
+        </a>
+      </div>
+    </section>
 
-            // Model welcome messages
-            const welcomeMessages = {
-                'grok': 'مرحباً! أنا Grok، مساعدك الذكي المتقدم. كيف يمكنني مساعدتك اليوم؟',
-                'gpt': 'مرحباً! أنا GPT، نموذج اللغة المتقدم. كيف يمكنني خدمتك؟',
-                'deepseek': 'مرحباً! أنا DeepSeek، مساعدك الذكي للبحث العميق. كيف يمكنني مساعدتك؟',
-                'gemma': 'مرحباً! أنا Gemma، مساعدك الذكي المميز. كيف يمكنني مساعدتك اليوم؟',
-                'gemini': 'مرحباً! أنا Gemini، مساعدك الذكي المتعدد القدرات. كيف يمكنني خدمتك؟'
-            };
+    <!-- Skills Section -->
+    <section id="skills">
+      <h2 class="section-title" id="skillsTitle">مهاراتي</h2>
+      <div class="skills-container">
+        <div class="skill-item" id="skill1">
+          <i class="fab fa-python skill-icon"></i>
+          <h3>بايثون</h3>
+          <p>تطوير تطبيقات ويب، أتمتة المهام، تحليل البيانات، بوتات ذكية</p>
+        </div>
+        <div class="skill-item" id="skill2">
+          <i class="fas fa-code skill-icon"></i>
+          <h3>تطوير الويب</h3>
+          <p>HTML5, CSS3, JavaScript, React, Django, Flask, APIs</p>
+        </div>
+        <div class="skill-item" id="skill3">
+          <i class="fas fa-database skill-icon"></i>
+          <h3>قواعد البيانات</h3>
+          <p>PostgreSQL, MySQL, MongoDB, Firebase, تحسين الأداء</p>
+        </div>
+        <div class="skill-item" id="skill4">
+          <i class="fas fa-server skill-icon"></i>
+          <h3>البنية التحتية</h3>
+          <p>Deployment, Docker, APIs, Security, Performance Optimization</p>
+        </div>
+      </div>
+    </section>
 
-            // API Functions
-            async function callGrok(text){
-                try {
-                    const res = await fetch("https://sii3.top/api/grok4.php", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        },
-                        body: new URLSearchParams({
-                            text: text
-                        })
-                    });
+    <!-- Social Section -->
+    <section id="social">
+      <h2 class="section-title" id="socialTitle">تواصل معي</h2>
+      <div class="social-section">
+        <p>لأي استفسار أو طلب، تواصل معي عبر منصات التواصل الاجتماعي</p>
+        <div class="social-grid">
+          <div class="social-box">
+            <h3>حسابي الشخصي</h3>
+            <div class="social-username">@_c4ep</div>
+            <div class="social-links">
+              <a href="https://instagram.com/_c4ep" target="_blank" class="social-link">
+                <i class="fab fa-instagram"></i>
+              </a>
+            </div>
+          </div>
+          <div class="social-box">
+            <h3>حساب شركتي</h3>
+            <div class="social-username">@cat.iiq</div>
+            <div class="social-links">
+              <a href="https://instagram.com/cat.iiq" target="_blank" class="social-link">
+                <i class="fab fa-instagram"></i>
+              </a>
+            </div>
+          </div>
+          <div class="social-box">
+            <h3>الدردشة المباشرة</h3>
+            <div class="social-username">Hussein_dsi</div>
+            <div class="social-links">
+              <a href="https://t.me/Hussein_dsi" target="_blank" class="social-link">
+                <i class="fab fa-telegram"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-                    const data = await res.json();
-                    return data.response;
-                } catch (error) {
-                    console.error("Error calling Grok:", error);
-                    return "عذراً، حدث خطأ في الاتصال بخدمة Grok. يرجى المحاولة مرة أخرى.";
-                }
-            }
+    <!-- Outro Section -->
+    <section class="outro" id="outro">
+      <h2 class="outro-text" id="outroText">إذا وصلت لهنا…<br>فأنت تحتاج <span>مبرمج مثلي</span></h2>
+      <button class="big-cta" id="bigCta">ابدأ مشروعك الآن</button>
+      <p class="signature" id="signature">صُنع بكل شغف بواسطة حسين أحمد</p>
+    </section>
+  </div>
 
-            async function callGPT(text){
-                try {
-                    const res = await fetch("https://sii3.top/api/gpt-oss.php", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            text: text
-                        })
-                    });
+  <script>
+    // Welcome messages array
+    const welcomeMessages = [
+      "أهلاً بك في عقل مبرمج",
+      "هنا تُصنع الأفكار",
+      "من فكرة… إلى كود",
+      "مرحباً بك في عالمي الرقمي 🌟"
+    ];
 
-                    const data = await res.json();
-                    return data.response;
-                } catch (error) {
-                    console.error("Error calling GPT:", error);
-                    return "عذراً، حدث خطأ في الاتصال بخدمة GPT. يرجى المحاولة مرة أخرى.";
-                }
-            }
+    // Dynamic titles array
+    const dynamicTitles = [
+      "مبرمج بايثون",
+      "مطور ويب",
+      "صانع حلول",
+      "مؤسس CAT IQ"
+    ];
 
-            async function callDeepSeek(text){
-                try {
-                    const res = await fetch("https://sii3.top/api/deepseek.php", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        },
-                        body: new URLSearchParams({
-                            r1: text
-                        })
-                    });
+    // Typewriter effect for welcome message
+    function typeWriter(text, element, delay = 80) {
+      let i = 0;
+      element.style.opacity = '1';
+      const timer = setInterval(() => {
+        if (i < text.length) {
+          element.innerHTML += text.charAt(i);
+          i++;
+        } else {
+          clearInterval(timer);
+        }
+      }, delay);
+    }
 
-                    const data = await res.json();
-                    return data.response;
-                } catch (error) {
-                    console.error("Error calling DeepSeek:", error);
-                    return "عذراً، حدث خطأ في الاتصال بخدمة DeepSeek. يرجى المحاولة مرة أخرى.";
-                }
-            }
+    // Fade in elements with delay
+    function fadeInElement(element, delay = 0, translateY = 30) {
+      setTimeout(() => {
+        element.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        element.style.opacity = '1';
+        element.style.transform = `translateY(0)`;
+      }, delay);
+    }
 
-            async function callGemma(text){
-                try {
-                    const res = await fetch("https://sii3.top/api/gemma.php", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        },
-                        body: new URLSearchParams({
-                            "27b": text
-                        })
-                    });
+    // Fly-in animation for cards
+    function flyInElement(element, delay = 0, from = 'right') {
+      const direction = from === 'left' ? '-100px' : '100px';
+      element.style.opacity = '0';
+      element.style.transform = `translateX(${direction})`;
+      element.style.transition = 'opacity 0.8s ease, transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+      
+      setTimeout(() => {
+        element.style.opacity = '1';
+        element.style.transform = 'translateX(0)';
+      }, delay);
+    }
 
-                    const data = await res.json();
-                    return data.response;
-                } catch (error) {
-                    console.error("Error calling Gemma:", error);
-                    return "عذراً، حدث خطأ في الاتصال بخدمة Gemma. يرجى المحاولة مرة أخرى.";
-                }
-            }
+    // Change dynamic title
+    function changeDynamicTitle() {
+      const titleElement = document.getElementById('dynamicTitle');
+      let currentIndex = 0;
+      
+      setInterval(() => {
+        currentIndex = (currentIndex + 1) % dynamicTitles.length;
+        titleElement.style.opacity = '0';
+        titleElement.style.transform = 'translateY(-20px)';
+        
+        setTimeout(() => {
+          titleElement.textContent = dynamicTitles[currentIndex];
+          titleElement.style.opacity = '1';
+          titleElement.style.transform = 'translateY(0)';
+        }, 300);
+      }, 4000);
+    }
 
-            async function callGemini(text){
-                try {
-                    const res = await fetch("https://sii3.top/DARK/gemini.php", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            text: text
-                        })
-                    });
-
-                    const data = await res.json();
-                    return data.response;
-                } catch (error) {
-                    console.error("Error calling Gemini:", error);
-                    return "عذراً، حدث خطأ في الاتصال بخدمة Gemini. يرجى المحاولة مرة أخرى.";
-                }
-            }
-
-            // Enter site animation
-            enterButton.addEventListener('click', function() {
-                landingScreen.classList.add('hidden');
+    // Welcome sequence
+    document.addEventListener('DOMContentLoaded', () => {
+      const welcomeOverlay = document.getElementById('welcomeOverlay');
+      const welcomeText = document.getElementById('welcomeText');
+      const enterBtn = document.getElementById('enterBtn');
+      const mainContent = document.getElementById('mainContent');
+      
+      // Show random welcome message with typewriter
+      const randomMessage = welcomeMessages[Math.floor(Math.random() * welcomeMessages.length)];
+      setTimeout(() => {
+        typeWriter(randomMessage, welcomeText, 100);
+        setTimeout(() => {
+          enterBtn.style.opacity = '1';
+          enterBtn.style.transform = 'translateY(0)';
+        }, 1500);
+      }, 500);
+      
+      // Enter button click handler
+      enterBtn.addEventListener('click', () => {
+        welcomeOverlay.style.opacity = '0';
+        setTimeout(() => {
+          welcomeOverlay.style.display = 'none';
+          mainContent.style.opacity = '1';
+          
+          // Animate hero section
+          fadeInElement(document.getElementById('dynamicTitle'), 200, 20);
+          changeDynamicTitle();
+          fadeInElement(document.getElementById('heroDesc'), 400, 20);
+          fadeInElement(document.getElementById('badges'), 600, 20);
+          fadeInElement(document.getElementById('info1'), 800, 30);
+          fadeInElement(document.getElementById('info2'), 1000, 30);
+          fadeInElement(document.getElementById('info3'), 1200, 30);
+          fadeInElement(document.getElementById('info4'), 1400, 30);
+          
+          // Animate story section on scroll
+          const storyObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                flyInElement(document.getElementById('storyTitle'), 200, 'left');
                 setTimeout(() => {
-                    chatInterface.classList.add('visible');
+                  fadeInElement(document.getElementById('storyContent'), 400, 40);
                 }, 300);
+                storyObserver.unobserve(entry.target);
+              }
             });
-
-            // AI Model Selection
-            document.querySelectorAll('.ai-model').forEach(model => {
-                model.addEventListener('click', function() {
-                    document.querySelectorAll('.ai-model').forEach(m => m.classList.remove('active'));
-                    this.classList.add('active');
-                    selectedModel = this.dataset.model;
-                    currentModel.textContent = modelNames[selectedModel];
-                    
-                    // Update current conversation model
-                    const currentConv = conversations.find(c => c.id == currentConversationId);
-                    if (currentConv) {
-                        currentConv.model = selectedModel;
-                    }
-                });
+          }, { threshold: 0.1 });
+          storyObserver.observe(document.getElementById('story'));
+          
+          // Animate company section on scroll - FULLY ANIMATED
+          const companyObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                flyInElement(document.getElementById('companyTitle'), 200, 'left');
+                setTimeout(() => {
+                  fadeInElement(document.querySelector('.company-logo'), 300, 50);
+                  fadeInElement(document.getElementById('companyMotto'), 400, 20);
+                  fadeInElement(document.getElementById('companyDesc'), 500, 20);
+                  flyInElement(document.getElementById('service1'), 700, 'left');
+                  flyInElement(document.getElementById('service2'), 900, 'up');
+                  flyInElement(document.getElementById('service3'), 1100, 'down');
+                  flyInElement(document.getElementById('service4'), 1300, 'right');
+                  fadeInElement(document.getElementById('companyBtn'), 1500, 20);
+                }, 300);
+                companyObserver.unobserve(entry.target);
+              }
             });
-
-            // Conversation Management
-            function createNewConversation() {
-                const newId = Date.now();
-                const newConversation = {
-                    id: newId,
-                    title: `محادثة جديدة ${conversations.length + 1}`,
-                    model: selectedModel,
-                    messages: []
-                };
-                
-                conversations.unshift(newConversation);
-                currentConversationId = newId;
-                renderConversations();
-                loadConversation(newId);
-            }
-
-            function deleteConversation(id) {
-                conversations = conversations.filter(conv => conv.id != id);
-                renderConversations();
-                
-                if (currentConversationId == id) {
-                    if (conversations.length > 0) {
-                        loadConversation(conversations[0].id);
-                    } else {
-                        createNewConversation();
-                    }
-                }
-                
-                updateConversationCount();
-            }
-
-            function clearCurrentConversation() {
-                const currentConv = conversations.find(c => c.id == currentConversationId);
-                if (currentConv) {
-                    currentConv.messages = [];
-                    chatMessages.innerHTML = '';
-                    addMessage(welcomeMessages[selectedModel], false);
-                }
-            }
-
-            function loadConversation(id) {
-                const conversation = conversations.find(conv => conv.id == id);
-                if (conversation) {
-                    currentConversationId = id;
-                    selectedModel = conversation.model;
-                    
-                    // Update UI
-                    document.querySelectorAll('.conv-item').forEach(item => {
-                        item.classList.remove('active');
-                    });
-                    document.querySelector(`.conv-item[data-id="${id}"]`).classList.add('active');
-                    
-                    document.querySelectorAll('.ai-model').forEach(model => {
-                        model.classList.remove('active');
-                    });
-                    document.querySelector(`.ai-model[data-model="${selectedModel}"]`).classList.add('active');
-                    
-                    currentModel.textContent = modelNames[selectedModel];
-                    
-                    // Load messages
-                    chatMessages.innerHTML = '';
-                    conversation.messages.forEach(msg => {
-                        addMessage(msg.content, msg.sender === 'user');
-                    });
-                    
-                    // If no messages, add welcome message
-                    if (conversation.messages.length === 0) {
-                        addMessage(welcomeMessages[selectedModel], false);
-                    }
-                }
-            }
-
-            function renderConversations() {
-                convList.innerHTML = '';
-                conversations.forEach(conv => {
-                    const li = document.createElement('li');
-                    li.className = 'conv-item';
-                    li.dataset.id = conv.id;
-                    if (conv.id == currentConversationId) {
-                        li.classList.add('active');
-                    }
-                    li.innerHTML = `
-                        <i class="fas fa-comment"></i>
-                        <span>${conv.title}</span>
-                        <button class="delete-conv" data-id="${conv.id}">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    `;
-                    convList.appendChild(li);
-                });
-                
-                // Add event listeners
-                document.querySelectorAll('.conv-item').forEach(item => {
-                    item.addEventListener('click', function(e) {
-                        if (!e.target.classList.contains('delete-conv') && 
-                            !e.target.closest('.delete-conv')) {
-                            loadConversation(this.dataset.id);
-                        }
-                    });
-                });
-                
-                document.querySelectorAll('.delete-conv').forEach(btn => {
-                    btn.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        deleteConversation(this.dataset.id);
-                    });
-                });
-                
-                updateConversationCount();
-            }
-
-            function updateConversationCount() {
-                convCount.textContent = conversations.length;
-            }
-
-            // Message Functions
-            function addMessage(content, isUser = false) {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `message ${isUser ? 'user-message' : 'ai-message'}`;
-                
-                const messageHeader = document.createElement('div');
-                messageHeader.className = 'message-header';
-                messageHeader.innerHTML = `
-                    <i class="fas ${isUser ? 'fa-user' : 'fa-robot'}"></i>
-                    <span>${isUser ? 'أنت' : modelNames[selectedModel]}</span>
-                `;
-                
-                const messageContent = document.createElement('div');
-                messageContent.className = 'message-content';
-                messageContent.textContent = content;
-                
-                messageDiv.appendChild(messageHeader);
-                messageDiv.appendChild(messageContent);
-                chatMessages.appendChild(messageDiv);
-                
-                // Scroll to bottom
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-                
-                // Save to conversation
-                const currentConv = conversations.find(c => c.id == currentConversationId);
-                if (currentConv) {
-                    currentConv.messages.push({
-                        sender: isUser ? 'user' : 'ai',
-                        content: content
-                    });
-                }
-            }
-
-            function showTypingIndicator() {
-                const typingDiv = document.createElement('div');
-                typingDiv.className = 'typing-indicator';
-                typingDiv.id = 'typingIndicator';
-                typingDiv.innerHTML = `
-                    <div class="typing-text">جاري التفكير</div>
-                    <div class="typing-dots">
-                        <div class="typing-dot"></div>
-                        <div class="typing-dot"></div>
-                        <div class="typing-dot"></div>
-                    </div>
-                `;
-                chatMessages.appendChild(typingDiv);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-
-            function hideTypingIndicator() {
-                const typingIndicator = document.getElementById('typingIndicator');
-                if (typingIndicator) {
-                    typingIndicator.remove();
-                }
-            }
-
-            async function generateAIResponse(userMessage) {
-                try {
-                    let response;
-                    switch(selectedModel) {
-                        case 'grok':
-                            response = await callGrok(userMessage);
-                            break;
-                        case 'gpt':
-                            response = await callGPT(userMessage);
-                            break;
-                        case 'deepseek':
-                            response = await callDeepSeek(userMessage);
-                            break;
-                        case 'gemma':
-                            response = await callGemma(userMessage);
-                            break;
-                        case 'gemini':
-                            response = await callGemini(userMessage);
-                            break;
-                        default:
-                            response = "عذراً، لم أتمكن من معالجة طلبك.";
-                    }
-                    return response;
-                } catch (error) {
-                    console.error("Error generating AI response:", error);
-                    return "عذراً، حدث خطأ في معالجة طلبك. يرجى المحاولة مرة أخرى.";
-                }
-            }
-
-            async function sendMessage() {
-                const message = messageInput.value.trim();
-                if (message) {
-                    addMessage(message, true);
-                    messageInput.value = '';
-                    
-                    showTypingIndicator();
-                    
-                    try {
-                        const aiResponse = await generateAIResponse(message);
-                        hideTypingIndicator();
-                        addMessage(aiResponse, false);
-                    } catch (error) {
-                        hideTypingIndicator();
-                        addMessage("عذراً، حدث خطأ في الاتصال بالخدمة. يرجى المحاولة مرة أخرى.", false);
-                    }
-                }
-            }
-
-            // Event Listeners
-            newConvBtn.addEventListener('click', createNewConversation);
-            
-            clearConvBtn.addEventListener('click', clearCurrentConversation);
-            
-            sendButton.addEventListener('click', sendMessage);
-            
-            messageInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    sendMessage();
-                }
+          }, { threshold: 0.1 });
+          companyObserver.observe(document.getElementById('company'));
+          
+          // Animate skills section on scroll
+          const skillsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                flyInElement(document.getElementById('skillsTitle'), 200, 'left');
+                setTimeout(() => {
+                  document.querySelectorAll('.skill-item').forEach((item, index) => {
+                    flyInElement(item, 400 + (index * 200), index % 2 === 0 ? 'left' : 'right');
+                  });
+                }, 300);
+                skillsObserver.unobserve(entry.target);
+              }
             });
-
-            // Initialize
-            renderConversations();
-            updateConversationCount();
-        });
-    </script>
+          }, { threshold: 0.1 });
+          skillsObserver.observe(document.getElementById('skills'));
+          
+          // Animate social section on scroll
+          const socialObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                flyInElement(document.getElementById('socialTitle'), 200, 'left');
+                setTimeout(() => {
+                  document.querySelectorAll('.social-box').forEach((box, index) => {
+                    fadeInElement(box, 400 + (index * 300), 30);
+                  });
+                }, 300);
+                socialObserver.unobserve(entry.target);
+              }
+            });
+          }, { threshold: 0.1 });
+          socialObserver.observe(document.getElementById('social'));
+          
+          // Animate outro section on scroll
+          const outroObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                fadeInElement(document.getElementById('outroText'), 300, 40);
+                setTimeout(() => {
+                  fadeInElement(document.getElementById('bigCta'), 600, 30);
+                  fadeInElement(document.getElementById('signature'), 900, 20);
+                }, 300);
+                outroObserver.unobserve(entry.target);
+              }
+            });
+          }, { threshold: 0.1 });
+          outroObserver.observe(document.getElementById('outro'));
+          
+        }, 500);
+      });
+      
+      // Big CTA button click
+      document.getElementById('bigCta').addEventListener('click', () => {
+        document.getElementById('social').scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
 </body>
 </html>
